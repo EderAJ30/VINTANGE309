@@ -4,6 +4,12 @@
 
 ---
 
+## 🌐 HOST
+
+🏗️
+
+---
+
 ## 🛠️ Tecnologías Utilizadas
 
 - **Back-End:** Node.js con Express.
@@ -44,14 +50,14 @@ Vintage309/
 ### 1. Clonar el Repositorio
 
 ```bash
-git clone https://github.com/EderAJ30/Vintage309.git
+git clone https://github.com/EderAJ30/VINTANGE309.git
 cd Vintage309
 ```
 
 ### 2. Instalar Dependencias
 
 ```bash
-npm install
+npm install sequelize
 ```
 
 ### 3. Configurar el Entorno
@@ -72,13 +78,7 @@ PORT=3000
 Asegúrate de tener **MariaDB** instalado y crea la base de datos:
 
 ```sql
-CREATE DATABASE vintage309;
-```
-
-Ejecuta las migraciones con Sequelize:
-
-```bash
-npx sequelize db:migrate
+source esquema.sql;
 ```
 
 ### 5. Ejecutar el Proyecto
@@ -87,7 +87,7 @@ npx sequelize db:migrate
 npm start
 ```
 
-El servidor estará disponible en: [http://localhost:3000](http://localhost:3000)
+El servidor estará disponible en: [http://localhost:2800](http://localhost:2800)
 
 ---
 
