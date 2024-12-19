@@ -1,0 +1,28 @@
+{
+  "name": "Vintage 309",
+  "version": "1.0.0",
+  "description": "Tienda en linea de ropa de segunda mano",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./index.js",
+    "server": "nodemon index.js"
+  },
+  "keywords": [
+    "Nodejs",
+    "Express",
+    "Nodemon",
+    "Mysql"
+  ],
+  "author": "Eder Avalos Juarez",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.0",
+    "mariadb": "^3.3.2",
+    "pug": "^3.0.3",
+    "sequelize": "^6.37.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
