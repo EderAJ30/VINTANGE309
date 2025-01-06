@@ -1,4 +1,3 @@
-
 # Vintage309
 
 **Vintage309** es una tienda de ropa vintage de segunda mano diseñada para ofrecer moda única, sostenible y asequible. Este proyecto tiene como objetivo promover el consumo responsable mientras se brinda un estilo auténtico a precios accesibles.
