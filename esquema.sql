@@ -1,190 +1,171 @@
 SET NAMES 'UTF8MB4';
 DROP DATABASE IF EXISTS vintange309;
-CREATE DATABASE IF NOT EXISTS hoteles DEFAULT CHARACTER SET UTF8MB4;
+CREATE DATABASE IF NOT EXISTS vintange309 DEFAULT CHARACTER SET UTF8MB4;
 USE vintange309;
 
-CREATE TABLE `roles` (
-  `id_rol` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `tipo` varchar(30)
+-- Crear tabla roles
+CREATE TABLE roles (
+  id_rol INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE `usuarios` (
-  `id_usuario` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  `correo` varchar(50) UNIQUE NOT NULL,
-  `numero` varchar(10) UNIQUE NOT NULL,
-  `contrasenia` varchar(10) NOT NULL,
-  `token` varchar(50) NOT NULL,
-  `creado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP',
-  `actualizado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-  `id_rol` int,
-  `id_direccion` int,
-  `id_tarjetas` innt
+-- Crear tabla direcciones
+CREATE TABLE direcciones (
+  id_direccion INT AUTO_INCREMENT PRIMARY KEY,
+  calle VARCHAR(100),
+  ciudad VARCHAR(50),
+  estado VARCHAR(50),
+  codigo_postal VARCHAR(10)
 );
 
-CREATE TABLE `direcciones` (
-  `id_direccion` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `estado` varchar(100) NOT NULL,
-  `municipio` varchar(100) NOT NULL,
-  `colonia` varchar(100) NOT NULL,
-  `calle` varchar(100) NOT NULL,
-  `codigo_postal` int(5) NOT NULL,
-  `instrucciones` text NOT NULL,
-  `tipo` ENUM(Principal,Secundaria) NOT NULL,
-  `creado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP',
-  `actualizado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+-- Crear tabla tarjetas
+CREATE TABLE tarjetas (
+  id_tarjeta INT AUTO_INCREMENT PRIMARY KEY,
+  numero_tarjeta VARCHAR(16) NOT NULL,
+  nombre_titular VARCHAR(50),
+  fecha_expiracion DATE,
+  cvv VARCHAR(4)
 );
 
-CREATE TABLE `metodo_de_envio` (
-  `id_envio` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `estado` ENUM(Activo,Inactivo) NOT NULL,
-  `id_direccion` int
+-- Crear tabla usuarios
+CREATE TABLE usuarios (
+  id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  correo VARCHAR(50) UNIQUE NOT NULL,
+  numero VARCHAR(10) UNIQUE NOT NULL,
+  contrasenia VARCHAR(10) NOT NULL,
+  token VARCHAR(50) NOT NULL,
+  id_rol INT,
+  id_direccion INT,
+  id_tarjetas INT,
+  creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_rol) REFERENCES roles(id_rol),
+  FOREIGN KEY (id_direccion) REFERENCES direcciones(id_direccion),
+  FOREIGN KEY (id_tarjetas) REFERENCES tarjetas(id_tarjeta)
 );
 
-CREATE TABLE `tarjetas` (
-  `id_tarjeta` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `nombre_en_tarjeta` varchar(30) NOT NULL,
-  `numero_en_tarjeta` varchar(19) NOT NULL,
-  `vencimiento` DATE NOT NULL,
-  `cvv` varchar(3) NOT NULL,
-  `direccion` varchar(100)
+-- Crear tabla productos
+CREATE TABLE productos (
+  id_producto INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  imagen VARCHAR(255) NOT NULL,
+  descripcion TEXT,
+  precio DECIMAL(10, 2) NOT NULL,
+  costo DECIMAL(10, 2) NOT NULL,
+  stock INT(4) NOT NULL,
+  estado ENUM('Activo', 'Inactivo') NOT NULL,
+  id_marca INT,
+  id_categoria INT,
+  creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE `metodo_de_pago` (
-  `id_pago` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `estado` ENUM(Principal,Secundaria) NOT NULL,
-  `tipo_pago` ENUM(tarjeta,transferencia,paypal),
-  `id_tarjeta` int
+-- Crear tabla metodo_de_pago
+CREATE TABLE metodo_de_pago (
+  id_pago INT AUTO_INCREMENT PRIMARY KEY,
+  estado ENUM('Principal', 'Secundaria') NOT NULL,
+  tipo_pago ENUM('tarjeta', 'transferencia', 'paypal'),
+  id_tarjeta INT,
+  FOREIGN KEY (id_tarjeta) REFERENCES tarjetas(id_tarjeta)
 );
 
-CREATE TABLE `pedidos` (
-  `id_pedido` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `fecha_de_pedido` datetime NOT NULL,
-  `total` decimal(10,2) NOT NULL,
-  `estado` ENUM(pendiente,completado),
-  `creado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP',
-  `actualizado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-  `id_pago` int,
-  `id_envio` int,
-  `id_usuario` int
+-- Crear tabla metodo_de_envio
+CREATE TABLE metodo_de_envio (
+  id_envio INT AUTO_INCREMENT PRIMARY KEY,
+  metodo VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE `detalle_pedidos` (
-  `id_detalle` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `cantidad` int NOT NULL,
-  `subtotal` decimal(10,2) NOT NULL,
-  `id_pedido` int,
-  `id_producto` int
+-- Crear tabla pedidos
+CREATE TABLE pedidos (
+  id_pedido INT AUTO_INCREMENT PRIMARY KEY,
+  fecha_de_pedido DATETIME NOT NULL,
+  total DECIMAL(10, 2) NOT NULL,
+  id_pago INT,
+  id_envio INT,
+  id_usuario INT,
+  estado ENUM('pendiente', 'completado'),
+  creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_pago) REFERENCES metodo_de_pago(id_pago),
+  FOREIGN KEY (id_envio) REFERENCES metodo_de_envio(id_envio),
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
 
-CREATE TABLE `productos` (
-  `id_producto` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
-  `imagen` varchar(255) NOT NULL,
-  `descripcion` text,
-  `precio` decimal(10,2) NOT NULL,
-  `costo` decimal(10,2) NOT NULL,
-  `stock` int(4) NOT NULL,
-  `estado` ENUM(Activo,Inactivo) NOT NULL,
-  `creado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP',
-  `actualizado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-  `id_marca` int
+-- Crear tabla detalle_pedidos
+CREATE TABLE detalle_pedidos (
+  id_detalle INT AUTO_INCREMENT PRIMARY KEY,
+  id_pedido INT,
+  id_producto INT,
+  cantidad INT NOT NULL,
+  subtotal DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido),
+  FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
 );
 
-CREATE TABLE `productos_categorias` (
-  `id_producto` int,
-  `id_categoria` int,
-  `PRIMARY` KEY(id_producto,id_categoria) UNIQUE
+-- Crear tabla categorias
+CREATE TABLE categorias (
+  id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+  nombre_categoria VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE `categorias` (
-  `id_categoria` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `tipo_categoria` ENUM(playera,chamarra,pantalon,gorra) NOT NULL
+-- Crear tabla productos_categorias
+CREATE TABLE productos_categorias (
+  id_producto INT,
+  id_categoria INT,
+  PRIMARY KEY (id_producto, id_categoria),
+  FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+  FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria)
 );
 
-CREATE TABLE `productos_tallas` (
-  `stock_talla` int NOT NULL,
-  `id_producto` int,
-  `id_talla` int,
-  `PRIMARY` KEY(id_producto,id_talla) UNIQUE
+-- Crear tabla tallas
+CREATE TABLE tallas (
+  id_talla INT AUTO_INCREMENT PRIMARY KEY,
+  talla VARCHAR(10) NOT NULL
 );
 
-CREATE TABLE `tallas` (
-  `id_talla` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `tipo_talla` ENUM(S,M,L,XL) NOT NULL
+-- Crear tabla productos_tallas
+CREATE TABLE productos_tallas (
+  id_producto INT,
+  id_talla INT,
+  stock_talla INT NOT NULL,
+  PRIMARY KEY (id_producto, id_talla),
+  FOREIGN KEY (id_producto) REFERENCES productos(id_producto),
+  FOREIGN KEY (id_talla) REFERENCES tallas(id_talla)
 );
 
-CREATE TABLE `marcas` (
-  `id_marca` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL
+-- Crear tabla historial_compras
+CREATE TABLE historial_compras (
+  id_historial INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT,
+  id_pedido INT,
+  fecha DATETIME NOT NULL,
+  total DECIMAL(10, 2) NOT NULL,
+  estado ENUM('pendiente', 'enviado', 'entregado', 'cancelado') NOT NULL,
+  creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
+  FOREIGN KEY (id_pedido) REFERENCES pedidos(id_pedido)
 );
 
-CREATE TABLE `carrito` (
-  `id_carrito` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `estado` ENUM(Activo,Inactivo) NOT NULL,
-  `creado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP',
-  `actualizado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-  `id_usuario` int
+-- Crear tabla carrito
+CREATE TABLE carrito (
+  id_carrito INT AUTO_INCREMENT PRIMARY KEY,
+  id_usuario INT,
+  estado ENUM('Activo', 'Inactivo') NOT NULL,
+  creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
 
-CREATE TABLE `detalle_carrito` (
-  `id_detalle_carrito` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `cantidad` int NOT NULL,
-  `precio_unitario` decimal(10,2) NOT NULL,
-  `subtotal` decimal(10,2) NOT NULL,
-  `id_carrito` int,
-  `id_producto` int
+-- Crear tabla detalle_carrito
+CREATE TABLE detalle_carrito (
+  id_detalle_carrito INT AUTO_INCREMENT PRIMARY KEY,
+  id_carrito INT,
+  id_producto INT,
+  cantidad INT NOT NULL,
+  precio_unitario DECIMAL(10, 2) NOT NULL,
+  subtotal DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (id_carrito) REFERENCES carrito(id_carrito),
+  FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
 );
-
-CREATE TABLE `historial_compras` (
-  `id_historial` int PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `fecha` datetime NOT NULL,
-  `total` decimal(10,2) NOT NULL,
-  `estado` ENUM(pendiente,enviado,entregado,cancelado) NOT NULL,
-  `creado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP',
-  `actualizado_en` datetime COMMENT 'NOT NULL, DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-  `id_usuario` int,
-  `id_pedido` int
-);
-
-ALTER TABLE `usuarios` ADD FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`);
-
-ALTER TABLE `direcciones` ADD FOREIGN KEY (`id_direccion`) REFERENCES `usuarios` (`id_direccion`);
-
-ALTER TABLE `tarjetas` ADD FOREIGN KEY (`id_tarjeta`) REFERENCES `usuarios` (`id_tarjetas`);
-
-ALTER TABLE `metodo_de_envio` ADD FOREIGN KEY (`id_direccion`) REFERENCES `direcciones` (`id_direccion`);
-
-ALTER TABLE `metodo_de_pago` ADD FOREIGN KEY (`id_tarjeta`) REFERENCES `tarjetas` (`id_tarjeta`);
-
-ALTER TABLE `pedidos` ADD FOREIGN KEY (`id_pago`) REFERENCES `metodo_de_pago` (`id_pago`);
-
-ALTER TABLE `pedidos` ADD FOREIGN KEY (`id_envio`) REFERENCES `metodo_de_envio` (`id_envio`);
-
-ALTER TABLE `pedidos` ADD FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
-
-ALTER TABLE `detalle_pedidos` ADD FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`);
-
-ALTER TABLE `productos` ADD FOREIGN KEY (`id_producto`) REFERENCES `detalle_pedidos` (`id_producto`);
-
-ALTER TABLE `productos` ADD FOREIGN KEY (`id_marca`) REFERENCES `marcas` (`id_marca`);
-
-ALTER TABLE `productos_categorias` ADD FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
-
-ALTER TABLE `productos_categorias` ADD FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id_categoria`);
-
-ALTER TABLE `productos_tallas` ADD FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
-
-ALTER TABLE `productos_tallas` ADD FOREIGN KEY (`id_talla`) REFERENCES `tallas` (`id_talla`);
-
-ALTER TABLE `carrito` ADD FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
-
-ALTER TABLE `detalle_carrito` ADD FOREIGN KEY (`id_carrito`) REFERENCES `carrito` (`id_carrito`);
-
-ALTER TABLE `detalle_carrito` ADD FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`);
-
-ALTER TABLE `historial_compras` ADD FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`);
-
-ALTER TABLE `historial_compras` ADD FOREIGN KEY (`id_pedido`) REFERENCES `pedidos` (`id_pedido`);
-
-#insertamos datos

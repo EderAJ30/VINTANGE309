@@ -1,13 +1,14 @@
 // import = requequeeridos
 import express from "express";
+import inicio from "./routes/inicio_router.js";
 
-import session from "express-session";
+//import session from "express-session";
 
 // Registro Usuario
 
 import db from "./config/db.js";
-import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
+//import cookieParser from "cookie-parser";
+//import dotenv from "dotenv";
 //import router_Verificar from "./routes/router_Verificar.js";
 //import { isAuthenticated } from "./middleware/middleware.js";
 
