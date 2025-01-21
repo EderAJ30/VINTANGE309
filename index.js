@@ -1,6 +1,7 @@
 // import = requequeeridos
 import express from "express";
 import inicio from "./routes/inicio_router.js";
+import router_productos from "./routes/productos_router.js";
 
 //import session from "express-session";
 
@@ -8,7 +9,7 @@ import inicio from "./routes/inicio_router.js";
 
 import db from "./config/db.js";
 //import cookieParser from "cookie-parser";
-//import dotenv from "dotenv";
+import dotenv from "dotenv";
 //import router_Verificar from "./routes/router_Verificar.js";
 //import { isAuthenticated } from "./middleware/middleware.js";
 
@@ -34,16 +35,16 @@ try {
 dotenv.config({ path: ".env" });
 
 // Seteamos las cookies 
-app.use(cookieParser());
+//app.use(cookieParser());
 
 app.set("view engine", "pug");
 app.set("views", "./views");
 app.use(express.static("public"));
 
-// Variables de Sesión
+// Variables de 
 /*
 app.use(session({
-    secret: "secret",
+    secret: "secret",   
     resave: true,
     saveUninitialized: true
 }));
@@ -67,10 +68,11 @@ app.use(session({
 
 //rouuters quue usaremos
 app.use("/", inicio);
+app.use("/layout", router_productos);
 app.use("/image", express.static("public/image"));
 
 // Definiendo el puerto -> Puerto de comunicación
 const port = 2800;
 app.listen(port, () => {
     console.log(`Esperando peticiones en el puerto ${port}`);
-});
+});        
