@@ -2,24 +2,27 @@ header.header
   div.header_envio
     p.header_texto Envío gratis en tu primera compra 
   .header_logo
-    img(src="/img/icons/user.svg", alt="usuario")
-    h1.logo_titulo VINTANGE309
-    img(src="/img/icons/shopping-cart.svg", alt="carrito")
+    a(href="/sesion/login") 
+      img(src="/img/icons/user.svg", alt="usuario")
+    a(href="/") 
+      h1.logo_titulo VINTANGE309
+    a(href="/pedido/carrito") 
+      img(src="/img/icons/shopping-cart.svg", alt="carrito")
   nav.header_nav
     ul.nav_menu
       li.nav_item
-        a.nav_link(href='#') Inicio
+        a.nav_link(href="/") Inicio 
       li.nav_item
-        a.nav_link(href='/layout/playera') Playeras
+        a.nav_link(href='/productos/categorias') Playeras
       li.nav_item
-        a.nav_link(href='#inicio') Pantalones
+        a.nav_link(href='/productos/categorias') Pantalones
       li.nav_item
-        a.nav_link(href='#inicio') Chamarras
+        a.nav_link(href='/productos/categorias') Chamarras
       li.nav_item
-        a.nav_link(href='#inicio') Sudaderas
+        a.nav_link(href='/productos/categorias') Sudaderas
       li.nav_item
-        a.nav_link(href='#inicio') Gorras
+        a.nav_link(href='/productos/categorias') Gorras
       li.nav_item
-        a.nav_link(href='#inicio') Accesorios
+        a.nav_link(href='/productos/categorias') Accesorios
       li.nav_item
-        a.nav_link(href='#') Contacto 
+        a.nav_link(href='') Contacto 
