@@ -3,3 +3,9 @@ const inicio = async (req, res) => {
 };
 
 export { inicio };
+
+/* const Render = async (req, res) => {
+    res.render("/");
+  };
+  
+export { Render }; */

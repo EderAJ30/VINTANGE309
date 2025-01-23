@@ -1,5 +1,5 @@
 const carritoRender = async (req, res) => {
-  res.render("pedido/carrito");
+  res.render("compras/carrito");
 };
 
 export { carritoRender };

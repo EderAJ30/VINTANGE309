@@ -4,8 +4,11 @@ import db from "./config/db.js";
 import dotenv from "dotenv";
 import inicio from "./routes/inicio_router.js";
 import router_sesion from "./routes/sesion_router.js";
-import router_carrito from "./routes/carrito_router.js";
+import router_compras from "./routes/compras_router.js";
 import router_producto from "./routes/producto_router.js";
+import router_footer from "./routes/footer_router.js";
+import router_admin from "./routes/admin_router.js";
+import router_usuario from "./routes/usuario_router.js";
 
 //import session from "express-session";
 
@@ -70,8 +73,11 @@ app.use(session({
 //rouuters quue usaremos
 app.use("/", inicio);
 app.use("/sesion", router_sesion);
-app.use("/pedido", router_carrito);
+app.use("/compras", router_compras);
 app.use("/productos", router_producto);
+app.use("/footer", router_footer);
+app.use("/admin", router_admin);
+app.use("/usuario", router_usuario);
 app.use("/image", express.static("public/image"));
 
 // Definiendo el puerto -> Puerto de comunicación

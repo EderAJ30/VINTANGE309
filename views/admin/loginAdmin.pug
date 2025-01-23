@@ -1,0 +1,20 @@
+extends ../sesion/indexSesion.pug
+
+block content
+
+    div.content-login
+        form(action="/login" method="POST")
+            h2 Iniciar sesión Administrador
+            fieldset
+                legend Ingresa tus credenciales Administrador:
+                
+                div.form_input
+                    label(for="nombre") Usuario
+                    input(type="text" id="nombre" name="username" required)
+                
+                div.form_input
+                    label(for="contraseña") Contraseña
+                    input(type="password" id="contraseña" name="password" required)
+                
+                div.boton-chico
+                    button.button(href="" type="submit" value="Login") Entrar
