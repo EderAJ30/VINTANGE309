@@ -1,4 +1,11 @@
 extends ../layout/index.pug
 
 block content
-  h2 productossss
+    div.content-opciones
+        section.section-opciones.opciones
+            each producto in productos
+                div.card
+                    div.card-img
+                    div.card-info
+                        h4.card-title= producto.nombre
+                        a.button.agregar-carrito(data-id=producto.id_producto) Añadir al carrito

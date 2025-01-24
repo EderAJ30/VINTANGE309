@@ -121,7 +121,7 @@ CREATE TABLE productos_categorias (
 -- Crear tabla tallas
 CREATE TABLE tallas (
   id_talla INT AUTO_INCREMENT PRIMARY KEY,
-  talla VARCHAR(10) NOT NULL
+  talla VARCHAR(10) 
 );
 
 -- Crear tabla productos_tallas
@@ -169,3 +169,85 @@ CREATE TABLE detalle_carrito (
   FOREIGN KEY (id_carrito) REFERENCES carrito(id_carrito),
   FOREIGN KEY (id_producto) REFERENCES productos(id_producto)
 );
+
+-- agregamos las tallas de los productos
+
+INSERT INTO tallas (id_talla, talla) 
+VALUES 
+(1, 'XS'),
+(2, 'S'),
+(3, 'M'),
+(4, 'L'),
+(5, 'XL'),
+(6, 'XXL');
+
+INSERT INTO categorias (id_categoria, nombre_categoria) 
+VALUES 
+(1, 'Playeras'),
+(2, 'Chamarras'),
+(3, 'Pantalones'),
+(4, 'Sudaderas'),
+(5, 'Gorras'),
+(6, 'Accesorios');
+
+INSERT INTO productos (id_producto, nombre, imagen, descripcion, precio, costo, stock, estado, id_marca, id_categoria)
+VALUES 
+(1, 'Playera Básica', 'imagen1.jpg', 'Playera cómoda y ligera.', 199.99, 100.00, 50, 'Activo', 1, 1),
+(2, 'Chamarra Casual', 'imagen2.jpg', 'Chamarra ideal para invierno.', 799.99, 400.00, 30, 'Activo', 2, 2),
+(3, 'Pantalón Slim Fit', 'imagen3.jpg', 'Pantalón moderno y ajustado.', 499.99, 250.00, 40, 'Activo', 3, 3),
+(4, 'Sudadera Deportiva', 'imagen4.jpg', 'Sudadera para actividades físicas.', 599.99, 300.00, 20, 'Activo', 4, 4),
+(5, 'Gorra Negra', 'imagen5.jpg', 'Gorra clásica de color negro.', 149.99, 80.00, 60, 'Activo', 5, 5),
+(6, 'Reloj Deportivo', 'imagen6.jpg', 'Reloj práctico y resistente.', 999.99, 500.00, 10, 'Activo', 6, 6);
+
+INSERT INTO productos_categorias (id_producto, id_categoria)
+VALUES 
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6);
+
+INSERT INTO productos_tallas (id_producto, id_talla, stock_talla)
+VALUES 
+(1, 1, 10), -- XS
+(1, 2, 10), -- S
+(1, 3, 10), -- M
+(1, 4, 10), -- L
+(1, 5, 5),  -- XL
+(1, 6, 5),  -- XXL
+
+(2, 1, 5),  -- XS
+(2, 2, 5),  -- S
+(2, 3, 5),  -- M
+(2, 4, 5),  -- L
+(2, 5, 5),  -- XL
+(2, 6, 5),  -- XXL
+
+(3, 1, 10), -- XS
+(3, 2, 10), -- S
+(3, 3, 10), -- M
+(3, 4, 10), -- L
+(3, 5, 5),  -- XL
+(3, 6, 5),  -- XXL
+
+(4, 1, 5),  -- XS
+(4, 2, 5),  -- S
+(4, 3, 5),  -- M
+(4, 4, 5),  -- L
+(4, 5, 5),  -- XL
+(4, 6, 5),  -- XXL
+
+(5, 1, 15), -- XS
+(5, 2, 15), -- S
+(5, 3, 15), -- M
+(5, 4, 10), -- L
+(5, 5, 10), -- XL
+(5, 6, 5),  -- XXL
+
+(6, 1, 2),  -- XS
+(6, 2, 2),  -- S
+(6, 3, 2),  -- M
+(6, 4, 2),  -- L
+(6, 5, 1),  -- XL
+(6, 6, 1);  -- XXL
